@@ -1,5 +1,3 @@
-* Implement branching logic in web interface (to match CLI).
-
 * Duplicate content (questions and answers) between web interface and CLI.
 
 * Duplicate branching logic (once we've implemented branching in web interface).

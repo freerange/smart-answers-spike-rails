@@ -10,7 +10,11 @@ class SmartAnswersController < ApplicationController
     responses = String(params[:responses]).split('/')
 
     question_to_render = responses.length + 1
-    if question_to_render <= TOTAL_NUMBER_OF_QUESTIONS
+
+    student_type = responses.first
+
+    if (question_to_render <= 2) ||
+      (question_to_render <= TOTAL_NUMBER_OF_QUESTIONS && student_type =~ /uk/)
       render "question_#{question_to_render}"
     else
       smart_answer = SmartAnswer.new
@@ -34,15 +38,17 @@ class SmartAnswersController < ApplicationController
       tuition_fees = responses.shift
       smart_answer.tuition_fees = Integer(tuition_fees)
 
-      household_income = responses.shift
-      smart_answer.household_income = Integer(household_income)
+      if student_type =~ /uk/
+        household_income = responses.shift
+        smart_answer.household_income = Integer(household_income)
 
-      additional_benefits = responses.shift
-      case additional_benefits
-      when 'has-children-under-17'
-        smart_answer.has_children = true
-      when 'none-of-these'
-        smart_answer.has_children = false
+        additional_benefits = responses.shift
+        case additional_benefits
+        when 'has-children-under-17'
+          smart_answer.has_children = true
+        when 'none-of-these'
+          smart_answer.has_children = false
+        end
       end
 
       render text: smart_answer.outcome
