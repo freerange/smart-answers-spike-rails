@@ -13,7 +13,39 @@ class SmartAnswersController < ApplicationController
     if question_to_render <= TOTAL_NUMBER_OF_QUESTIONS
       render "question_#{question_to_render}"
     else
-      render text: 'All done'
+      smart_answer = SmartAnswer.new
+
+      student_type = responses.shift
+      case student_type
+      when 'uk-student-full-time'
+        smart_answer.study_mode = SmartAnswer::Student::FULL_TIME
+        smart_answer.student_origin = SmartAnswer::Student::UK
+      when 'uk-student-part-time'
+        smart_answer.study_mode = SmartAnswer::Student::PART_TIME
+        smart_answer.student_origin = SmartAnswer::Student::UK
+      when 'eu-student-full-time'
+        smart_answer.study_mode = SmartAnswer::Student::FULL_TIME
+        smart_answer.student_origin = SmartAnswer::Student::EU
+      when 'eu-student-part-time'
+        smart_answer.study_mode = SmartAnswer::Student::PART_TIME
+        smart_answer.student_origin = SmartAnswer::Student::EU
+      end
+
+      tuition_fees = responses.shift
+      smart_answer.tuition_fees = Integer(tuition_fees)
+
+      household_income = responses.shift
+      smart_answer.household_income = Integer(household_income)
+
+      additional_benefits = responses.shift
+      case additional_benefits
+      when 'has-children-under-17'
+        smart_answer.has_children = true
+      when 'none-of-these'
+        smart_answer.has_children = false
+      end
+
+      render text: smart_answer.outcome
     end
   end
 end
