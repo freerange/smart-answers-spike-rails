@@ -1,0 +1,11 @@
+<h2>What's your annual household income?</h2>
+
+<%= form_tag url_for, method: :get do %>
+  <p>
+    <%= text_field_tag :response %>
+  </p>
+
+  <p>
+    <%= submit_tag 'Next question' %>
+  </p>
+<% end %>

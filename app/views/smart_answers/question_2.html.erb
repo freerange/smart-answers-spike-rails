@@ -1,0 +1,11 @@
+<h2>How much are your tuition fees per year?</h2>
+
+<%= form_tag url_for, method: :get do %>
+  <p>
+    <%= text_field_tag :response %>
+  </p>
+
+  <p>
+    <%= submit_tag 'Next question' %>
+  </p>
+<% end %>
